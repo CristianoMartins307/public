@@ -1,0 +1,649 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{array} % Para manipulação de tabelas
+\usepackage{lipsum} % Para texto exemplo (opcional)
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\sisetup{
+    output-decimal-marker={,} % Define a vírgula como separador decimal
+    }
+\usepackage{textcomp}
+\usepackage{comment}
+\usepackage{xcolor}
+\usepackage[portuguese]{babel} % Configura o idioma para português
+\usepackage[utf8]{inputenc}    % Define a codificação para UTF-8
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Projeto de Máquina Síncrona de Polos Salientes de 200 kVA com Entreferro Senoidal\\
+\thanks{}
+}
+
+\author{
+\IEEEauthorblockN{Augusto Copetti Cravo\IEEEauthorrefmark{1}, Filipe Moreira de Aguiar\IEEEauthorrefmark{2}, Talles Trebbi de Feijó\IEEEauthorrefmark{3}}
+\IEEEauthorblockA{\textit{Programa de Pós-Graduação em Engenharia Elétrica} \\
+\textit{Universidade Federal do Rio Grande do Sul}\\
+Porto Alegre, Brasil \\
+\IEEEauthorrefmark{1}augusto.cravo@icloud.com,
+\IEEEauthorrefmark{2}fmoreiradeaguiar@gmail.com,
+\IEEEauthorrefmark{3}feijotalles@gmail.com}
+}
+
+\maketitle
+
+\begin{abstract}
+Este trabalho apresenta o projeto de uma máquina síncrona de polos salientes com potência aparente nominal de 200~kVA, com foco na otimização da forma de onda da tensão terminal. A partir de um modelo iterativo foi realizado o dimensionamento preliminar da máquina, determinando-se os principais parâmetros e grandezas. Estratégias específicas, como o encurtamento de passo, o perfil senoidal do entreferro e a inclinação axial do rotor, são adotadas para reduzir o conteúdo harmônico e atender aos requisitos de conexão à rede elétrica. A validação do projeto é realizada por meio de simulações em elementos finitos, com análise da distribuição de densidades de indução nas regiões ativas e verificação da distorção harmônica total. Os resultados demonstram a efetividade das decisões de projeto na obtenção de uma tensão terminal com baixa distorção, compatível com aplicações que exigem qualidade de energia.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Máquina síncrona, polos salientes, entreferro senoidal, harmônicas, qualidade de energia, projeto eletromagnético. 
+\end{IEEEkeywords}
+
+\section{Introdução}
+O projeto de máquinas e equipamentos deve se preocupar não somente em atender a especificações funcionais como torque, potência, velocidade ou rendimento, mas também deve considerar o processo de manufatura, desde a fabricação, montagem e manutenção, bem como os aspectos de viabilidade econômica. Nesse contexto, o projeto de uma máquina elétrica é um processo que envolve muitas variáveis que, de modo geral, estão inter-relacionadas e sujeitos a restrições físicas, construtivas ou econômicas. Portanto, a concepção de uma máquina deve considerar todos esses parâmetros simultaneamente, de modo a viabilizar uma solução técnica adequada e exequível. 
+
+Este trabalho tem por objetivo realizar o projeto básico de uma máquina síncrona de polos salientes a partir de uma série de requisitos de projeto.\\
+\section{Cálculo analítico preliminar}
+\subsection{Dimensionamento básico da máquina e do rotor}
+Como é de conhecimento nesta área de estudo, o projeto da máquina síncrona de polos salientes é um processo iterativo. Ao ser realizado o dimensionamento preliminar da máquina e de seu rotor, são utilizadas equações analíticas já consolidadas na teoria elementar do funcionamento e no modelamento da máquina em regime permanente. As fórmulas analíticas utilizadas a seguir podem ser encontradas no trabalho~\cite{b1}, onde são explicadas em detalhes. No dimensionamento da máquina síncrona, o volume ativo, a potência aparente interna e o campo resultante no entreferro estão interligados. Neste trabalho, considera-se prioritariamente a máquina como sendo um gerador de 200 kVA, com tensão nominal de fase de 220 V, ligada em estrela com tensão de linha de 380 V, corrente nominal $I_n$ igual a 303,03 A, frequência nominal de 60 Hz, número total de polos igual a 6 e fator de potência nominal 0,8. Com esta última informação, pode-se encontrar o ângulo de potência $\varphi$ (entre os fasores terminais de tensão e corrente). De tal forma, a potência aparente interna $Si$ será maior que a potência aparente nominal $S$ e elas estão relacionadas de acordo com a equação (\ref{eq:Si}):
+\begin{equation}
+  S_i = [1 + 0,12 \cdot \text{sen}(\varphi)] \cdot S
+\label{eq:Si}
+\end{equation}
+Na definição de uma máquina trifásica, considerando os carregamentos de densidade linear de corrente e indução no entreferro distribuídos de forma senoidal, uma equação básica a ser considerada é a equação do torque de acordo com a equação (\ref{eq:Torq}):
+\begin{equation}
+ T = 1,35 \cdot V_a \cdot A_{ef} \cdot \hat{B}_\delta
+\label{eq:Torq}
+\end{equation}
+Ainda, é considerado que a relação entre o torque $(T)$ e a potência aparente interna $S_i$ pela velocidade angular mecânica $\omega_m$ é dada por $T = \frac{S_i}{\omega_m}$. A velocidade angular mecânica pode ser encontrada como sendo $\omega_m = 2\pi \cdot \frac{f}{p}$.
+Encontra-se então a importante equação (\ref{eq:Va}), que é básica para iniciar o dimensionamento do volume ativo $V_a$:
+\begin{equation}
+  V_a = \frac{S_i}{1,35 \cdot \omega_m \cdot A_{ef} \cdot \hat{B}_\delta}
+\label{eq:Va}
+\end{equation}
+Neste trabalho, considerou-se como um primeiro critério os carregamentos de densidade linear de corrente eficaz $A_{ef}$ sendo 35 kA/m e de indução no entreferro $\hat{B}_\delta$ sendo 0,85 T.  
+Considerando que a máquina deste trabalho possui 6 polos (sendo $p=3$ o número de pares de polos), adota-se um fator de forma $\lambda = \frac{\ell}{\tau_p} = \frac{\sqrt{p}}{2}$ conforme documentado em [1]. 
+A equação do passo polar é conforme (\ref{eq:tau_p}):
+\begin{equation}
+\tau_p = \frac{2\pi \cdot R}{2p}
+\label{eq:tau_p}
+\end{equation}
+Desta forma, o comprimento axial pode ser expresso conforme a equação (\ref{eq:l}):
+\begin{equation}
+  \ell = \frac{\pi \cdot R \cdot \sqrt{p}}{2p}
+\label{eq:l}
+\end{equation}
+Ainda é necessário definir uma equação básica de geometria dada por (\ref{eq:Va_geo}): 
+\begin{equation}
+  V_a = \frac{\pi D^2 \cdot \ell}{4}
+\label{eq:Va_geo}
+\end{equation}
+Considerando as duas últimas equações e o volume ativo já definido na equação (\ref{eq:Va}), pode-se encontrar o raio interno do estator como sendo:
+\begin{equation}
+  R = \left(\frac{2 \cdot \sqrt{p} \cdot V_a}{\pi^2}\right)^{1/3}
+\label{eq:R}
+\end{equation}
+Neste trabalho, foram feitas avaliações sobre a influência do formato dos polos em diferentes aspectos, sendo exemplos a onda de indução no entreferro, as distorções harmônicas e a corrente de excitação, entre outros. Foram avaliados, portanto, formatos de entreferro constante e variável. Resultados dessas avaliações podem ser vistos na próxima subseção. Mesmo que nem sempre uma exigência rigorosa de formas senoidais de indução e tensão são necessárias para máquinas de baixa potência e pequeno porte, é importante mencionar que o trabalho buscou como objetivo principal um projeto com entreferro senoidal. Este objetivo foi estabelecido para poder explorar e buscar com maiores recursos uma onda de tensão senoidal a vazio e sob carga. Uma consideração elementar, para qualquer formato de polos e entreferro, é o fator de encobrimento polar $\alpha_p$. Este fator relaciona a largura do polo $b_p$ e o passo polar $\tau_p$ de acordo com a equação (\ref{eq:alpha_p}). 
+Conforme exposto em [1], o fator de encobrimento costuma variar entre 0,55 e 0,8. O fator menor é mais direcionado para projetos com grande número de polos. Considerando que este trabalho estuda uma máquina com 6 polos, escolheceu-se um valor intermediário (0,67).    
+\begin{equation}
+  \alpha_p = \frac{b_p}{\tau_p}
+\label{eq:alpha_p}
+\end{equation}
+De acordo com o exposto em [1], grandes números de estudos foram realizados na busca do formato ideal dos polos para obtenção de uma senóide no entreferro ao longo de muitas décadas. Ainda conforme documentado em [1], uma abordagem que pode levar à obtenção de resultados bastante próximos de uma onda senoidal de indução seria a utilização de uma variação do entreferro com função senoidal inversa. Nesta situação, o entreferro aumentará de forma suave do valor mínimo no centro do polo até o valor máximo nas extremidades. Define-se o ângulo periférico $\epsilon$ medido em graus mecânicos a partir do centro do polo. Com isso, pode-se encontrar a função que representa o entreferro ao longo do polo de acordo com a equação (\ref{eq:entreferro_sen}):     
+\begin{equation}
+  \delta(\epsilon) = \frac{\delta_o}{|\cos(p\epsilon)|}
+\label{eq:entreferro_sen}
+\end{equation}
+Na equação anterior, $\delta_o$ representa o entreferro mínimo no centro do polo. Pode-se definir o entreferro máximo como sendo:
+\begin{equation}
+  \delta_m = \frac{\delta_o}{\cos\left(\frac{\alpha_p \cdot \pi}{2}\right)}
+\label{eq:entreferro_max}
+\end{equation}
+É importante ressaltar que o formato proposto, de acordo com as equações anteriores, foi obtido sem consideração da saturação. Portanto, mais uma vez nota-se que o processo é iterativo e poderá ser melhor aferido com uma simulação baseada no método de elementos finitos.
+Na prática, a fabricação e o projeto do entreferro conforme a equação (\ref{eq:entreferro_sen}) podem ser trabalhosos, de forma que pode-se aproximar e simplificar a execução dos polos como sendo um arco de um círculo com centro deslocado em relação ao centro geométrico da máquina. Esta prática também foi adotada neste trabalho ao ser utilizado o software Ansys Motor-CAD. A equação de aproximação do raio do polo em relação a um centro deslocado é dada por (\ref{eq:Rp}):
+\begin{equation}
+  R_p \approx \frac{R \left(1 - 3 \cdot \frac{\delta_o}{R}\right)}{1 + \frac{\delta_o}{R} \cdot \left(1,83 p^2 - 2\right)}
+\label{eq:Rp}
+\end{equation}
+O deslocamento em relação ao centro geométrico é chamado de excentricidade e definido como sendo de acordo com a equação (\ref{eq:Exc}):
+\begin{equation}
+  e = R - R_p - \delta_o
+\label{eq:Exc}
+\end{equation}
+Para ser determinado o entreferro mínimo, deverão ser consideradas questões mecânicas como exequibilidade, rigidez e velocidade máxima de projeto. O critério de rigidez mecânica, que normalmente não é crítico em máquinas de pequeno porte, coloca como orientativo que o entreferro mínimo deverá ser de acordo com a equação a seguir:
+\begin{equation}
+  \delta_o \geq \frac{D}{1000}
+\end{equation}
+Como projeto eletromagnético, na definição do valor mínimo deve-se considerar o campo resultante no entreferro, que também incluirá o campo de reação do estator. Conforme documentado em [1], o campo de reação produzirá uma série de efeitos indesejados. Poderá haver uma deformação significativa do campo produzido pelos polos, ocasionando tensão induzida com senoidal distorcida, esforços assimétricos sobre o rotor e perdas e saturação excessivas em partes ferromagnéticas. Para o último efeito mencionado, a situação é mais crítica no rotor. Recomenda-se, de forma orientativa, que o entreferro mínimo em máquinas com formato senoidal de polos salientes seja de acordo com a equação (\ref{eq:entreferro_min}):   
+\begin{equation}
+  \frac{\delta_o}{\tau_p} \geq 4,5 \cdot 10^{-7} \cdot \frac{A_{ef}}{\hat{B}_\delta}
+\label{eq:entreferro_min}
+\end{equation}
+
+Na Figura \ref{fig:1polo} são ilustradas a largura da sapata polar $bsp$, a altura total da sapata polar $hsp$, a altura auxiliar da sapata polar $hsp$ $aux$, o raio interno do estator $R$, o raio da sapata polar $Rsp$ e a largura do núcleo polar $bpk$.
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras/rotor_comcota.png}
+    \caption{Representação geométrica do rotor.}
+    \label{fig:1polo}
+\end{figure}
+
+\begin{table}[b]
+\centering
+\caption{Considerações analíticas básicas da máquina e do rotor}
+\label{tab:base_rotor}
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Dimensionamento preliminar}} \\ \hline
+\textbf{Parâmetro} & \textbf{Descrição} & \textbf{Valor} \\ \hline
+$S_i$ & potência aparente interna & 214,40 kVA \\ \hline
+$\omega_m$ & velocidade angular mecânica & 125,66 rad/s \\ \hline
+$V_a$ & volume ativo & 0,0425 m³ \\ \hline
+$\lambda$ & fator de forma & 0,87 \\ \hline
+$\tau_p$ & passo polar & 0,258 m \\ \hline
+$R$ & raio interno do estator & 0,246 m \\ \hline
+$\ell$ & comprimento axial da máquina & 0,223 m \\ \hline
+$\alpha_p$ & encobrimento polar & 0,67 \\ \hline
+$b_p$ & largura do polo & 0,172 m \\ \hline
+$\delta_{m}$ & entreferro máximo & 0,0096 m \\ \hline
+$\delta_o$ & entreferro mínimo  & 0,0048 m \\ \hline
+$R_p$ & raio do polo & 0,181 m \\ \hline
+$e$ & excentricidade & 0,0604 m \\ \hline
+$bsp$ & largura da sapata polar & 0,1618 m \\ \hline
+$Rsp$ & raio da sapata polar & 0,2083 m \\ \hline
+$hsp$ & altura total da sapata polar & 0,033 m \\ \hline
+$\phi_p$ & fluxo polar  & 0,0311 Wb \\ \hline
+$bpk$ & largura do núcleo polar  & 0,0988 m \\ \hline
+$hcp$ & altura da coroa polar do rotor & 0,0598 m \\ \hline
+\end{tabular}
+\end{table}
+
+Através de simples expressões trigonométricas, pode-se chegar às seguintes equações para a largura da sapata polar (\ref{eq:bsp}), raio da sapata polar (\ref{eq:Rsp}) e a altura total da sapata polar (\ref{eq:hsp}):
+\begin{equation}
+bsp = 2(R - \delta_{m}) \operatorname{sen} \left( \frac{\pi}{p} \cdot \frac{\alpha_p}{2} \right) 
+\label{eq:bsp}
+\end{equation}
+\begin{equation}
+Rsp = (R - \delta_{m}) \cos \left( \frac{\pi}{p} \cdot \frac{\alpha_p}{2} \right) - hsp\text{ }aux 
+\label{eq:Rsp}
+\end{equation}
+\begin{equation}
+hsp = R - \delta_o - R_{sp} 
+\label{eq:hsp}
+\end{equation}
+Foi arbitrado um valor inicial para $hsp$ $aux$ = 18,0 mm e a decisão final sobre este valor levou em consideração a saturação encontrada nas simulações.
+Os resultados dos principais parâmetros do dimensionamento analítico da máquina e de seu rotor podem ser encontrados na Tabela \ref{tab:base_rotor}. Para ser calculada a largura do núcleo polar $bpk$, deve-se primeiramente calcular o fluxo polar. Considera-se a onda de indução no entreferro como sendo a onda fundamental e de acordo com a equação (\ref{eq:fluxo_polar}):
+\begin{equation}
+\phi_p = \hat{B}_\delta \cdot \ell \cdot \tau_p \cdot \frac{2}{\pi}
+\label{eq:fluxo_polar}
+\end{equation}
+E com uma estimativa inicial para a indução no núcleo polar sendo $Bpk = 1,8$ T, pode-se encontrar a largura do núcleo polar como sendo:
+\begin{equation}
+bpk = \frac{1,25 \cdot \phi_p}{B_{pk} \cdot \ell \cdot K_{ep} }
+\label{eq:bpk}
+\end{equation}
+O fator de empilhamento $K_{ep}$ foi considerado como 0,98.
+Como também parte do dimensionamento do rotor, adota-se como valor inicial de indução 1,5 T para a coroa polar do rotor $B_{cp}$. Dessa forma, encontra-se a altura da coroa polar do rotor $hcp$:
+\begin{equation}
+hcp = \frac{0,63 \cdot \phi_p}{\ell \cdot K_{ep} \cdot B_{cp}}
+\label{eq:hcp}
+\end{equation}
+
+\subsection{Dimensionamento do estator e do enrolamento de armadura}
+O cálculo analítico do estator também pode ser considerado como uma parte básica do dimensionamento da máquina síncrona de polos salientes. No estator, está presente a maioria das linhas de campo que saem do rotor e atravessam o entreferro buscando um fechamento no polo vizinho, com exceção de poucas linhas de dispersão que também atravessam o entreferro mas adotam um caminho de dispersão entre polos. Deve-se buscar um bom aproveitamento do material ferromagnético do estator, e sempre tomar em conta os efeitos de saturação e perdas que precisam ficar com valores adequados. Conforme documentado em [2], um valor usual de indução na coroa do estator costuma variar entre 1,0 e 1,5 T para máquinas síncronas de polos salientes. De acordo com [3], uma consideração inicial possível para o fluxo que irá atravessar a coroa, seria considerá-lo como sendo 90 \% do fluxo que atravessa o entreferro. Pela geometria da máquina, o fluxo que irá atravessar a coroa ficará dividido entre os dois lados que se formam a partir de uma linha radial no centro do núcleo polar. Portanto, o fluxo que atravessa a seção transversal da coroa do estator será aproximadamente 45 \% do fluxo polar. Considerando-se uma indução máxima para a coroa sendo $B_s = $ 1,2 T e o fator de empilhamento $K_{ep}$ ainda como 0,98, pode-se chegar à altura da coroa do estator através da equação (\ref{eq:h_s}). Conforme pode ser entendido a partir de [3], ao serem observadas as linhas de campo do estator, nota-se que a indução máxima ocorrerá na região próxima do eixo interpolar. A existência da variação da indução tanto na direção tangencial como na radial já está considerada na recomendação de indução máxima.     
+\begin{equation}
+h_s = \frac{0,45\cdot\phi_p}{l \cdot K_{ep}\cdot B_s}
+\label{eq:h_s}
+\end{equation}
+A próxima definição básica para o estator é a definição do número de ranhuras, onde deverão ser considerados diferentes aspectos conforme exposto em [3]. De forma geral, um maior número de ranhuras poderá gerar uma melhor dissipação térmica, pois a área de contato dos enrolamentos com as partes do ferro irá aumentar. O entreferro efetivo também será beneficiado com o uso de ranhuras, de forma que uma relação ideal entre largura de dente e largura de ranhura poderá ser buscada com a variação do número de ranhuras.  Ainda, pode-se buscar uma melhor rigidez mecânica e facilidade de fabricação com a escolha do número de ranhuras. O número de ranhuras do estator é definido por:
+\begin{equation}
+N_s = q \cdot 2 \cdot m \cdot p
+\label{eq:N_s}
+\end{equation}
+O número de ranhuras por polo e fase foi definido como $ q = 4 $. O número de fases é $ m = 3 $. Dessa forma, o número de ranhuras do estator será $ N_s = 72 $.
+Agora, pode-se calcular o passo de ranhura:
+\begin{equation}
+\tau_n =\frac{2\cdot \pi \cdot R}{N_s}
+\label{eq:tau_n}
+\end{equation}
+Os resultados dos principais parâmetros do dimensionamento analítico do estator podem ser encontrados na Tabela \ref{tab:base_estator}.
+Considerando que o projeto deste trabalho é referente a uma máquina de baixa tensão, adotou-se o formato de dentes retos com o objetivo de buscar uma distribuição
+mais uniforme da indução ao longo do dente. Essa é uma prática comum, uma vez que máquinas de baixa tensão costumam ter um número menor de espiras nas ranhuras, sendo adequada a utilização de condutores com seção circular. A máquina deste projeto também possui uma potência baixa, portanto a seção dos condutores e/ou número de condutores nas ranhuras tende a ser menor que em uma máquina de alta tensão e alta potência. Na situação de máquinas de alta tensão, comumente seria preferível a utilização de condutores com seção retangular. Um valor típico de indução nos dentes fica na faixa de 1,6 a 2,0 T. Nesta trabalho, considera-se como valor inicial para a indução no dente $Bz$ = 1,8 T. A largura do dente $bz$ será proporcional a densidade de fluxo no entreferro e inversamente proporcional à indução admitida para o dente:
+\begin{equation}
+bz = \frac{\hat B_\delta \cdot \tau_n}{Bz}
+\label{eq:bz}
+\end{equation}
+
+\begin{table}[t]
+\centering
+\caption{Considerações analíticas do estator}
+\label{tab:base_estator}
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Dimensionamento preliminar}} \\ \hline
+\textbf{Parâmetro} & \textbf{Descrição} & \textbf{Valor} \\ \hline
+$h_s$ & altura da coroa do estator & 0,0534 m \\ \hline
+$q$ & ranhuras por polo e fase & 4 ranhuras \\ \hline
+$N_s$ & número de ranhuras & 72 ranhuras \\ \hline
+$ \tau_n $ & passo de ranhura & 0,0215 m \\ \hline
+$ bz $ & largura do dente & 0,0101 m \\ \hline
+$ tz $ & largura da ranhura & 0,0113 m \\ \hline
+$ S_n $ & área de uma ranhura & 357,98 mm² \\ \hline
+$ h_n $ & altura de uma ranhura & 0,0316 m \\ \hline
+$ R_s $ & raio do estator & 0,3311 m\\ \hline
+\end{tabular}
+\end{table}
+
+
+A largura da ranhura é dada pela simples subtração da largura do dente do passo de ranhura no topo do dente $\tau_{nb}$, de acordo com a equação (\ref{eq:tz}).
+\begin{equation}
+tz = \tau_{nb} - bz
+\label{eq:tz}
+\end{equation}
+A área de uma ranhura é definida de acordo com a equação (\ref{eq:Sn}):
+\begin{equation}
+S_n = \frac{A_{ef} \cdot \tau_n}{K_{es} \cdot J}
+\label{eq:Sn}
+\end{equation}
+O coeficiente de enchimento $K_{es}$ adotado de forma analítica foi iniciado como 0,3 e incrementado para 0,35 após algumas iterações. A densidade de corrente foi estipulada como sendo $J = 6$ A/mm².
+A altura da ranhura pode ser estimada de acordo com a equação (\ref{eq:h_n}):
+\begin{equation}
+h_n \approx \frac{S_n}{tz}
+\label{eq:h_n}
+\end{equation}
+Com a altura da ranhura, é possível determinar o raio do estator de acordo com a equação (\ref{eq:R_s}):
+\begin{equation}
+R_s = R + h_n + h_s
+\label{eq:R_s}
+\end{equation}
+
+Agora, será realizado o dimensionamento do enrolamento de armadura do estator. O número de ranhuras sob um polo $Q_p$ é calculado conforme a equação (\ref{eq:Qp}):
+\begin{equation}
+Q_p= q \cdot m
+\label{eq:Qp}
+\end{equation}
+O valor encontrado para $Q_p$ é igual a 12 ranhuras e corresponde ao que seria um passo completo (ou passo pleno).
+A relação entre o passo do enrolamento $Y_b$ e o número de ranhuras sob um polo $Q_p$ é calculada através da próxima equação:
+\begin{equation}
+\beta_b = \frac{Y_b}{Q_p}
+\label{eq:Betab}
+\end{equation}
+
+Foi feita a consideração do passo de enrolamento $Y_b$ sendo igual a 8 ranhuras (passo encurtado em 4 ranhuras em relação a um passo pleno), de forma que a relação $\beta_b$ seja igual a 0,667. Esta consideração irá anular completamente a terceira harmônica na tensão induzida do enrolamento, pois o fator de encurtamento de passo será nulo para $n=3$ na equação (\ref{eq:Kp}). Ampliando um pouco mais a análise, pode-se notar que todas as harmônicas com índice múltiplo de 3 serão também anuladas.
+A próxima equação define o fator de encurtamento de passo para as harmônicas de ordem $n$:
+\begin{equation}
+K_{pn} = \operatorname{sen}(n\cdot\frac{\pi}{2}) \cdot \operatorname{sen}(n\cdot\frac{\gamma_b}{2})
+\label{eq:Kp}
+\end{equation}
+Para o uso da equação anterior, ainda é necessário considerar que $\gamma_b$ corresponde ao ângulo do passo de ranhura e pode ser encontrado de acordo com a equação (\ref{eq:gamma_b}):
+\begin{equation}
+\gamma_b = \beta_b \cdot \pi
+\label{eq:gamma_b}
+\end{equation}
+Caso o encurtamento de passo não tivesse sido adotado, a forma de onda da tensão induzida em uma espira e um condutor do enrolamento seria a mesma da distribuição da indução radial no  
+entreferro, conforme exposto em [5]. Entretanto, o encurtamento de passo adotado também irá influenciar a tensão fundamental induzida, pois o valor do fator de encurtamento de passo para a onda fundamental com $n=1$ será igual a 0,866. O enrolamento da armadura fica definido como sendo de 72 ranhuras com camada dupla e do tipo imbricado, de maneira que o encurtamento de passo poderá ser realizado através de um deslocamento entre a camada inferior e a superior. As condições de simetria também são atendidas, uma vez que o enrolamento de camada dupla em máquinas trifásicas atende às condições quando o número de ranhuras é um múltiplo de 3. 
+A próxima consideração para o enrolamento do estator é o cálculo do fator de distribuição. A tensão induzida em um grupo formado por $q$ bobinas em série sob um polo ou par de polos pode ser obtida através de uma soma fasorial das tensões induzidas em cada bobina, conforme documentado em [5]. As tensões induzidas nas bobinas terão a mesma forma de onda se comparadas entre si, porém estarão defasadas por um ângulo $\alpha_{ne}$ que corresponde a um passo de ranhura em graus elétricos de acordo com a equação (\ref{eq:xne}). 
+\begin{equation}
+\alpha_{ne} =\frac{\pi}{q \cdot m}
+\label{eq:xne}
+\end{equation}
+O fator de distribuição será específico para cada harmônica com índice $n$ e é calculado de acordo com a equação (\ref{eq:Kd}):
+\begin{equation}
+K_{dn} = \frac{\operatorname{sen}(\frac{q \cdot n \cdot \alpha_{ne}}{2})}{        
+ q \cdot \operatorname{sen}( \frac{n \cdot \alpha_{ne}}{2})    } 
+\label{eq:Kd}
+\end{equation}
+O fator de distribuição calculado para a onda fundamental com $n=1$ é igual a 0,958. Já o fator de distribuição calculado para a terceira harmônica não será relevante, de acordo com o exposto anteriormente sobre o fator de encurtamento de passo ser nulo para índice $n$ igual a 3.
+
+\begin{table}[b]
+\centering
+\caption{Considerações analíticas do enrolamento de armadura}
+\label{tab:base_armadura}
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Dimensionamento preliminar}} \\ \hline
+\textbf{Parâmetro} & \textbf{Descrição} & \textbf{Valor} \\ \hline
+$Q_p$ & ranhuras sob um polo & 12 ranhuras \\ \hline
+$Y_b$ & passo do enrolamento & 8 ranhuras \\ \hline
+$ \beta_b $ & relação de encurtamento & 0,667 \\ \hline
+$ \alpha_{ne} $ & passo de ranhura elétrico & 0,262 rad. elétricos \\ \hline
+$ \gamma_i $ & inclinação elétrica & 0,262 rad. elétricos \\ \hline
+$ K_{p1} $ & fator de passo para n=1 & 0,866  \\ \hline
+$ K_{p3} $ & fator de passo para n=3 & 0 \\ \hline
+$ K_{d1} $ & fator de distribuição para n=1 & 0,958  \\ \hline
+$ K_{i1} $ & fator de inclinação para n=1 & 0,997  \\ \hline
+$ W_t $ & total de espiras em série & 32 \\ \hline
+$ G_p $ & grupos em paralelo & 3 \\ \hline
+$ W_b $ & espiras por bobina & 4 \\ \hline
+$ S_e $ & seção de uma espira & 16,83 mm² \\ \hline
+$ S_f $ & seção de uma fase & 50,50 mm² \\ \hline
+t.e. & tipo de enrolamento & imbricado \\ \hline
+t.c. & tipo de camada & dupla \\ \hline
+\end{tabular}
+\end{table}
+
+
+O próximo recurso que será explorado para aprimorar a forma da onda da tensão induzida será uma inclinação entre o estator e o rotor no sentido axial da máquina. Tal recurso buscará minimizar os efeitos dos harmônicos com ordem alta, que estão associados com o número de ranhuras sob um polo, podendo ser chamados de harmônicos de ranhura do enrolamento conforme documentado em [5]. O ângulo de inclinação elétrico $\gamma_i$ escolhido neste trabalho corresponde a uma prática usual, sendo adotado o ângulo de um passo de ranhura em graus elétricos. 
+A inclinação elétrica definida corresponderá a uma inclinação de 5º mecânicos entre estator e rotor na geometria da máquina. Considera-se, portanto, $\gamma_i = 0,262$ radianos elétricos.
+O fator de inclinação poderá ser calculado para cada harmônica de índice $n$ de acordo com a equação (\ref{eq:Kin}):
+\begin{equation}
+K_{in} = \frac{\operatorname{sen}\left(\frac{n \cdot \gamma_i}{2}\right)}{\left(\frac{n \cdot \gamma_i}{2}\right)}
+\label{eq:Kin}
+\end{equation}
+A inclinação definida pouco irá influenciar na onda fundamental de tensão da máquina. Isto pode ser observado através do fator de inclinação para $n=1$ que é igual a 0,997. 
+O próximo objetivo no dimensionamento do enrolamento do estator passa a ser a determinação do número total de espiras em série por fase, de acordo com a equação (\ref{eq:Wt}). 
+\begin{equation}
+W_t = \frac{V_t}{4{,}443 \cdot \phi_p \cdot f \cdot K_{p1} \cdot K_{d1} \cdot K_{i1} }
+\label{eq:Wt}
+\end{equation}
+Deve ser observado que a equação anterior é aplicável à componente fundamental de tensão de fase conforme normalmente praticado em projetos de máquinas. 
+O valor encontrado de espiras em série por fase foi levemente arredondado para 32. Considerando que o enrolamento é de camada dupla com 72 ranhuras, o número de bobinas totais por fase será igual a 24. Sendo considerado 3 grupos paralelos, resultará em 8 bobinas em série por fase. O número de espiras por bobina $W_b$ será portanto igual a 4.
+A seção total dos condutores de uma espira $S_e$ é definida pela relação entre a corrente nominal da fase, a densidade de corrente estipulada como sendo $J = 6$ A/mm² e o número de grupos em paralelo, conforme a equação a seguir:
+\begin{equation}
+S_e = \frac{I_n}{J \cdot G_p}
+\label{eq:Sc}
+\end{equation}
+Considerando que existem 3 grupos em paralelo ($G_p = 3$), encontra-se como resultado que a seção total dos condutores de uma espira será igual a 16,83 mm² e será partilhada entre 2 condutores circulares com padrão AWG 8 paralelos entre si dentro da mesma espira. A seção total de condução de corrente de uma fase será igual a $S_f = S_e \cdot G_p = 50,50$ mm².
+
+%R = 246 mm
+%$\ell = 223$ mm, mas por conta de apresentar um torque baixo na operação como motor, aumentou-se para 235 mm
+%$Va = 0,04248 m^3$ 
+
+\subsection{Dimensionamento do enrolamento do rotor}
+O dimensionamento do enrolamento de excitação requer o conhecimento prévio das propriedades magnéticas dos materiais utilizados, bem como das dimensões geométricas do rotor, considerando as quedas de tensão magnética associadas tanto às partes ferromagnéticas quanto ao entreferro. Contudo, uma abordagem para o dimensionamento inicial do enrolamento de campo é partir do cálculo preliminar da força magnetomotriz (FMM) necessária para vencer o entreferro, utilizando esse valor como referência inicial para as etapas seguintes do projeto.
+
+Admite-se inicialmente que aproximadamente 70\% da FMM total gerada pelo enrolamento é consumida no entreferro~\cite{b1}. 
+
+Com base nessa premissa e adotando-se um número inicial de espiras igual a \( N_e = 110 \), foi possível estimar a corrente de excitação requerida para operação sob carga.
+
+A FMM total foi calculada a partir da expressão:
+\begin{equation}
+    N_e \cdot I_{\text{en}} \approx 1{,}5 \cdot \frac{B_\delta \cdot \delta_0}{0{,}70 \cdot \mu_0} \approx 7336{,}9 \ \text{A} \cdot \text{espira},
+\end{equation}
+o que resultou em uma corrente de excitação estimada de aproximadamente \( I_{\text{en}} \approx 67 \ \text{A} \) na condição de operação sob carga e \( I_{\text{e}} \approx 44,6 \ \text{A} \) na condição a vazio.
+
+Com essa corrente e adotando-se uma densidade superficial de corrente \( J_e = 5 \ \text{A/mm}^2 \) e um fator de ocupação \( K_{er} = 0{,}6 \), a área da seção transversal disponível para o enrolamento foi calculada por:
+\begin{equation}
+    S_e = \frac{N_e \cdot I_{\text{en}}}{K_{er} \cdot J_e} \approx 2438 \ \text{mm}^2.
+\end{equation}
+
+Inicialmente, adotou-se uma proporção geométrica da janela de enrolamento de (\(h_{pe}:b_{pe}\)) de \(3:1\), resultando em dimensões preliminares de 90 mm de altura e 30 mm de largura. No entanto, essa configuração mostrou-se inadequada, uma vez que o espaçamento entre condutores ficou reduzido a ponto de comprometer a viabilidade da montagem e do isolamento entre os condutores.
+
+Diante disso, procedeu-se à revisão da geometria do enrolamento. A área foi ajustada para cerca de 1890 $\text{mm}^2$, com nova configuração de 70 mm de altura 27 mm de largura. 
+
+Além disso, para maximizar o aproveitamento volumétrico da janela de enrolamento, optou-se por condutores com seção transversal retangular, os quais permitem um empacotamento mais eficiente em comparação a condutores circulares. Foram utilizados múltiplos condutores em paralelo por espira (três condutores de $2mm^2$), o que contribui para uma melhor distribuição da corrente e maior flexibilidade na montagem, além de facilitar a conformação dos condutores às restrições geométricas impostas. Essa configuração permitiu elevar o número de espiras para 180, resultando em uma redução da corrente nominal sob carga para 35 A (com densidade superficial de corrente de 6 $A/mm^2$) e, a vazio para 20 A, obtendo-se um fator de enchimento de 0,55, permitindo ainda um aumento no número de condutores, caso necessário.
+
+A curva de magnetização da máquina é apresentada na Figura~\ref{fig:curva_magnetizacao_maquina}, em que, para uma corrente de 20 A tem-se aproximadamente 0,91 T e para 35 A cerca de 1,02 T.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras/Caracterização_Aço/curva_magnetizacao.png}
+    \caption{Curva de magnetização da máquina projetada.}
+    \label{fig:curva_magnetizacao_maquina}
+\end{figure}
+
+Como material foram utilizadas chapas de aço elétrico do tipo M350, cujas curvas de magnetização e perdas são apresentadas na Figura~\ref{fig:magnetizacao_aco}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras/Caracterização_Aço/curva_magnetizacao_acoM350A.png}
+    \caption{Curva de magnetização da chapa de aço elétrico M350.}
+    \label{fig:magnetizacao_aco}
+\end{figure}
+
+
+\section{Otimização da forma de onda}
+A máquina foi projetada com o objetivo de gerar uma tensão terminal com forma de onda estritamente senoidal, reduzindo ao mínimo possível o conteúdo harmônico decorrente de modos eletromagnéticos espúrios. A minimização dessas componentes espectrais visa atender a requisitos de qualidade da energia fornecida, compatíveis com aplicações sensíveis a distorções. Além disso, a mitigação de harmônicos está diretamente associada à redução de perdas, à contenção da elevação térmica e à minimização de estresses mecânicos nos componentes ativos da máquina, o que contribui para o prolongamento da sua vida útil~\cite{b6,b7,b8,b9}.
+Através de uma análise qualitativa, constatou-se que cerca de 10\% do fluxo efetivo total é disperso enquanto, inicialmente, fora estimado um fluxo de dispersão de 25\%.
+A fundamental da indução no entreferro tem um valor de 0,86 T, sendo que a indução no entreferro possui uma taxa de distorção harmônica total 11,08\%. As suas componentes espectrais estão representadas na Figura~\ref{fig:harm_ind_entreferro}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras//Harmônicas/harm_ind_entreferro.png}
+    \caption{Harmônicas da indução no entreferro.}
+    \label{fig:harm_ind_entreferro}
+\end{figure}
+
+A seguir, serão apresentados os fatores de projeto analisados com o objetivo de atender aos requisitos de geração de tensão e minimização de esforços mecânicos.
+
+\subsection{Análise do formato da sapata polar}
+Em aplicações onde a máquina é conectada diretamente à rede elétrica, sem o uso de inversores de frequência, a definição do perfil geométrico dos polos torna-se um aspecto crítico de projeto~\cite{b1}. Observa-se que o formato geométrico da sapata polar tem impacto direto sobre a distribuição da indução magnética radial no entreferro e por consequência, no formato da tensão induzida nos enrolamentos do estator. No caso de sapatas com perfil senoidal, a distribuição da indução aproxima-se de uma senóide, conforme ilustrado na Figura~\ref{fig:entreferro-senoidal-sem}, o que tende a minimizar a distorção harmônica da tensão induzida. Em contraste, o perfil com entreferro constante (Figura~\ref{fig:entreferro-constante}) gera uma distribuição mais uniforme sob o polo, resultando em uma forma de onda mais achatada e portanto, com maior conteúdo harmônico.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras/entreferro_senoidal_seminclinação.png}
+    \caption{Distribuição da indução magnética para entreferro com perfil senoidal (sem inclinação rotor).}
+    \label{fig:entreferro-senoidal-sem}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+\includegraphics[width=1\linewidth]{Figuras/inducao_entreferro_constante.png}
+    \caption{Distribuição da indução magnética para entreferro constante.}
+    \label{fig:entreferro-constante}
+\end{figure}
+
+A distorção harmônica total (THD) é definida como:
+
+\begin{equation}
+\text{THD} = \frac{\sqrt{\sum_{n=2}^{N} A_n^2}}{A_1} \cdot 100\%
+\end{equation}
+
+Em que $A_1$ é a amplitude da componente fundamental da densidade de fluxo magnético no entreferro e $A_n$ são as amplitudes das harmônicas de ordem $n$. No caso do entreferro com perfil constante, a distorção harmônica total da indução foi de aproximadamente 22,51\%, enquanto que para a configuração com sapata de perfil senoidal e sem inclinação do rotor, a distorção harmônica total da indução no entreferro caiu pela metade, para aproximadamente 11\%. 
+A comparação entre os casos analisados indica que o uso de sapatas com perfil senoidal contribui para uma melhor aproximação da onda fundamental senoidal ideal, resultando em menor conteúdo harmônico. Essa adequação tende a resultar em menor fluxo disperso associado às componentes harmônicas e também a reduzir a corrente de excitação necessária pelo enrolamento do rotor.
+
+\subsection{Inclinação do rotor}
+
+Existem harmônicos relacionados ao número de ranhuras sob um polo cujas amplitudes não são afetadas por correções na distribuição ou por mudanças no passo do enrolamento~\cite{b5}. Estas componentes harmônicas podem causar esforços mecânicos, gerar vibrações e ruídos acústicos~\cite{b6}. Além disso, contribuem para o aumento de perdas e para a oscilação local na indução magnética radial no entreferro, conforme ilustrado na Figura~\ref{fig:entreferro-senoidal-sem}. Para mitigar estes efeitos, foi aplicada uma inclinação axial ao rotor, correspondente ao comprimento de uma ranhura (5º mecânicos) ao longo do comprimento do eixo. Essa técnica atua como um filtro espacial de harmônicas, reduzindo o acoplamento efetivo entre as harmônicas de alta ordem. 
+
+A Figura~\ref{fig:comparacao-senoidal} apresenta a comparação da distribuição radial da indução antes e após a aplicação da inclinação. Observa-se que, com o rotor inclinado, há uma redução nas oscilações do campo magnético no entreferro, indicando atenuação das harmônicas de ranhura.
+
+% \begin{figure}[!h]
+%     \centering
+%     \includegraphics[width=1\linewidth]{Figuras/entreferro_senoidal_cominclinação.png}
+%     \caption{Distribuição da indução magnética para entreferro com perfil senoidal (com inclinação do rotor).}
+%     \label{fig:entreferro-senoidal-com}
+% \end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras/compara entreferro senoidal com e sem inclinacao.png}
+    \caption{Comparação entre os perfis de indução para entreferro senoidal com e sem inclinação do rotor.}
+    \label{fig:comparacao-senoidal}
+\end{figure}
+
+\subsection{Análise harmônica e efeitos do encurtamento de passo}
+
+A distorção harmônica total na tensão terminal de fase é reduzida significativamente com o encurtamento de passo do enrolamento do estator. Conforme ilustrado na Figura~\ref{fig:harmonicas_tensao_fae_terminal} e apresentado na Tabela~\ref{encurtamento_passo}, a THD cai de 5{,}70\% no caso de passo pleno (12 ranhuras) para 1{,}62\% com um passo de 8 ranhuras que ocorre devido à atenuação seletiva de harmônicas.
+
+O objetivo principal do encurtamento, neste projeto, foi a supressão da 3ª harmônica da tensão. A Tabela~\ref{harmonica_terceira} mostra que a amplitude dessa componente, inicialmente em torno de 17,05~V com passo pleno, é reduzida para apenas 0,18~V no passo de 8 ranhuras. Tal comportamento se deve à anulação do fator de passo \(k_p\) especificamente para \(n = 3\), promovendo uma redução efetiva dessa harmônica no resultado final da tensão.
+
+
+\begin{table}[h!]
+\centering
+\caption{Distorção harmônica total (THD) da tensão terminal de fase para diferentes passos de enrolamento}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Passo do enrolamento} & \textbf{THD [\%]} \\
+\hline
+12 ranhuras (pleno) & 5,699 \\
+\hline
+11 ranhuras         & 5,063 \\
+\hline
+10 ranhuras         & 3,669 \\
+\hline
+9 ranhuras          & 1,922 \\
+\hline
+8 ranhuras          & 1,622 \\
+\hline
+\end{tabular}
+\label{encurtamento_passo}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Amplitude da 3ª harmônica da tensão terminal de fase em função do passo de enrolamento}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Passo do enrolamento} & \textbf{Amplitude da 3ª harmônica [V]} \\
+\hline
+12 ranhuras (pleno) & 17,0508 \\
+\hline
+11 ranhuras         & 15,3514 \\
+\hline
+10 ranhuras         & 11,1986 \\
+\hline
+9 ranhuras          & 5,3675  \\
+\hline
+8 ranhuras          & 0,1778  \\
+\hline
+\end{tabular}
+\label{harmonica_terceira}
+\end{table}
+
+As Figuras~\ref{fig:tensao_sem_encurtamento}~e~\ref{fig:tensao_com_encurtamento} apresentam as tensões terminais de fae para o caso sem encurtamento de passo e para o passo encurtado em 4 ranhuras, respectivamente. Estes resultados ilustram como a distorção harmônica afeta significativamente o formato da tensão e o quão efetivo se torna aplicar este encurtamento.
+No entanto, o encurtamento de passo implica diretamente no aumento do custo do projeto. Por essas razões, encurtamentos de muitas ranhuras para eliminar harmônicos específicos se restringem a aplicações especiais, em que a forma de onda seja um fator crítico de projeto. Portanto, grandes encurtamentos de passo acabam não sendo utilizados em projetos de máquinas convencionais.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras/tensao_sem_encurtamento_passo.png}
+    \caption{Tensão de fase terminal sem encurtamento de passo.}
+    \label{fig:tensao_sem_encurtamento}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras/tensao_terminal.png}
+    \caption{Tensão terminal com encurtamento de passo de 4 ranhuras.}
+    \label{fig:tensao_com_encurtamento}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Figuras/Harmônicas/harmonica_tensao_terminal_fase.png}
+    \caption{Harmônicas da tensão de fase terminal.}
+    \label{fig:harmonicas_tensao_fae_terminal}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Distribuição das densidades de indução magnética nas regiões ativas da máquina}
+
+A Figura~\ref{fig:linhas-inducao} apresenta a localização das regiões analisadas quanto à indução magnética, servindo como referência espacial para as demais figuras desta seção. Os valores de indução simulados mostram boa concordância com os valores estipulados na fase de projeto e com os valores típicos observados em aplicações similares, vide Tabela~\ref{tabela_comparativa_inducao}. A exceção ocorre na coroa do rotor, onde a indução atinge cerca de 1,70~T — aproximadamente 0,2~T acima do previsto inicialmente. No entanto, essa elevação é interpretada como admissível, dado que a indução tende a crescer em regiões mais próximas do núcleo polar.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{} & \textbf{Inicial [T]} & \textbf{Simulado [T]} & \textbf{ Típicos [T]} \\
+\hline
+Entreferro       & 0{,85} & 1{,16}               & 1{,05} \\
+\hline
+Núcleo polar     & 1{,80} & 1{,80}               & 1{,80} \\
+\hline
+Coroa do rotor   & 1{,50} & 1{,70}
+& 1{,50} \\
+\hline
+Coroa do estator & 1{,20} & 1{,50}               & 1{,50} \\
+\hline
+Dente do estator & 1{,80} & 1{,90}               & 2{,00} \\
+\hline
+\end{tabular}
+\caption{Comparação entre indução inicial, indução simulada e valores típicos máximos por região da máquina elétrica.}
+\label{tabela_comparativa_inducao}
+\end{table}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/linhas_inducao2.png}
+    \caption{Referência das regiões analisadas: (1) Coroa do rotor, (2) Núcleo polar, (3) Sapata polar, (4) Entreferro, (5) Ponta do dente do estator, (6) Dente e Ranhura, (7) Coroa do estator.}
+    \label{fig:linhas-inducao}
+\end{figure}
+
+A distribuição da indução magnética nos dentes do estator apresenta-se uniforme ao longo do comprimento do dente, como pode ser visto nas Figuras~\ref{fig:circuito-aberto}~,~\ref{fig:dentes-estator}~e~\ref{fig:dentes-e-ranhuras-estator}. A constância da indução é um comportamento característico de máquinas que utilizam dentes retos e permite melhor aproveitamento do material magnético do dente~\cite{b3}. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/circuito_aberto.png}
+    \caption{Linhas de campo magnético obtidas por simulação em circuito aberto.}
+    \label{fig:circuito-aberto}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/dentes_estator.png}
+    \caption{Indução magnética na ponta dos dentes do estator ao longo de um passo polar.}
+    \label{fig:dentes-estator}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/ranhuras_estator.png}
+    \caption{Indução magnética nas ranhuras e nos dentes do estator ao longo de um passo polar.}
+    \label{fig:dentes-e-ranhuras-estator}
+\end{figure}
+
+As Figuras~\ref{fig:coroa-estator}~,~\ref{fig:coroa-rotor}~,~\ref{fig:nucleo-polar}~e~\ref{fig:sapata-polar} apresentam as distribuições da densidade de fluxo magnético ao longo das coroas do estator e do rotor, assim como no núcleo e na sapata polar. Em todas essas regiões, observa-se uma distribuição homogênea da indução, o que é desejável para prevenir regiões de saturação e garantir o melhor aproveitamento do material magnético.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/coroa_estator.png}
+    \caption{Distribuição da indução magnética na coroa do estator ao longo de um passo polar.}
+    \label{fig:coroa-estator}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/coroa_rotor.png}
+    \caption{Distribuição da indução magnética na coroa do rotor ao longo de um passo polar.}
+    \label{fig:coroa-rotor}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/nucleo_polar.png}
+    \caption{Distribuição da indução magnética no núcleo polar ao longo de um passo polar.}
+    \label{fig:nucleo-polar}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/sapata_polar.png}
+    \caption{Distribuição da indução magnética na sapata polar ao longo de um passo polar.}
+    \label{fig:sapata-polar}
+\end{figure}
+
+Por fim, a distribuição da indução magnética no entreferro, mostrada na Figura~\ref{fig:entreferro}, apresenta perfil estável e valores compatíveis com aqueles observados em máquinas síncronas de polos salientes encontrados na literatura, confirmando que a densidade de fluxo nessa região está dentro dos limites operacionais esperados.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{Figuras/Induções/entreferro.png}
+    \caption{Distribuição da indução magnética no entreferro ao longo de um passo polar.}
+    \label{fig:entreferro}
+\end{figure}
+    
+ \section{Conclusões}
+O desenvolvimento do projeto evidenciou a complexidade envolvida em conciliar requisitos de desempenho, construtivos (projeto, manufatura e montagem) e financeiros. Cada escolha — seja no formato dos polos, na configuração do enrolamento ou na seleção dos condutores — afeta diretamente a forma de onda da tensão, o torque, as perdas e a exequibilidade de montagem. 
+Neste projeto, para o dimensionamento inicial considerado, a utilização de condutores circulares no enrolamento do rotor resultaria em um fator de ocupação excessivamente elevado, dificultando tanto a confecção das bobinas quanto o processo de montagem. Como alternativa, a ampliação do diâmetro interno do estator permitiria acomodar melhor os condutores, com o benefício adicional de aumento do torque nominal por conta do aumento do volume ativo da máquina.
+Adicionalmente, na configuração inicial, adotou-se uma única espira por bobina e apenas um grupo em paralelo no enrolamento do estator, o que torna a máquina mais sensível a variações nos parâmetros elétricos. A adoção de três grupos em paralelo, com quatro espiras por bobina, facilitou a realização de ajustes finos em parâmetros como a tensão terminal.
+Além disso, embora tenha um custo financeiro elevado, para atender às exigências de desempenho de um gerador conectado à rede que seja destinado à alimentação de cargas sensíveis a distorções, que necessite operar de forma contínua e demande menor manutenção, recursos como o encurtamento de passo e a inclinação do eixo do rotor em relação ao estator tornam-se essenciais para a melhoria da qualidade da forma de onda gerada.
+Nesse processo, tornou-se evidente a importância de abordagens iterativas e como é importante a experiência do projetista.
+
+\begin{thebibliography}{00}
+\bibitem{b1} L. A. Pereira, ``Apostila 02-Projeto do Rotor da Máquina Síncrona de Polos Salientes,'' não publicado.
+\bibitem{b2} L. A. Pereira, ``Apostila 01-Dimensionamento Básico de Máquinas Elétricas,'' não publicado.
+\bibitem{b3} L. A. Pereira, ``Apostila 03-Projeto do Estator da Máquina Síncrona de Polos Salientes,'' não publicado.
+\bibitem{b4} L. A. Pereira, ``Determinação da Curva de Magnetização da Máquina Síncrona de Polos Salientes ,'' não publicado.
+\bibitem{b5} L. A. Pereira, ``Apostila 05-Análise e Projeto de Enrolamentos de Máquinas CA,'' não publicado.
+\bibitem{b6} S. L. Nau, "The influence of the skewed rotor slots on the magnetic noise of three-phase induction motors," 1997 Eighth International Conference on Electrical Machines and Drives (Conf. Publ. No. 444), Cambridge, UK, 1997, pp. 396-399, doi: 10.1049/cp:19971106.
+\bibitem{b7} PARKER, F. Alternating current generators. In: LAUGHTON, M. A.; WARNE, D. J. (ed.). Electrical engineer's reference book. 16. ed. Oxford: Newnes, 2003. cap. 28, p. 28-1–28-59. ISBN 9780750646376. Disponível em: https://www.sciencedirect.com/science/article/pii/B9780750646376500289.
+\bibitem{b8} Seddik, M.S.; Eteiba, M.B.; Shazly, J. Evaluating the Harmonic Effects on the Thermal Performance of a Power Transformer. Energies 2024, 17, 4871. https://doi.org/10.3390/en17194871.
+\bibitem{b9} Brkovic, B.; Jecmenica, M. Calculation of Rotor Harmonic Losses in Multiphase Induction Machines. Machines 2022, 10, 401. https://doi.org/10.3390/machines10050401
+
+
+\end{thebibliography}
+\end{document}
+
